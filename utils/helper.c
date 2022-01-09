@@ -44,9 +44,9 @@ void parse_request(char *request, char ***parsed_request) {
 }
 
 // Load requested file into buffer
-void *load_file(char *file, int *size) {
+void *load_file(char *file) {
     FILE *fp;
-    long lSize;
+    unsigned long ul_size;
     char *buffer;
 
     fp = fopen(file , "r");
@@ -55,21 +55,22 @@ void *load_file(char *file, int *size) {
     }
 
     fseek(fp , 0L , SEEK_END);
-    lSize = ftell(fp);
+    ul_size = ftell(fp);
     rewind(fp);
 
     // Allocate memory for entire content
-    buffer = calloc(1, lSize+1);
+    buffer = calloc(1, ul_size+1);
     if(!buffer) {
         fclose(fp), fputs("memory alloc fails",stderr), exit(1);
     }
 
     // Copy the file into the buffer
-    if(fread(buffer , lSize, 1 , fp) != 1) {
+    if(fread(buffer , ul_size, 1 , fp) != 1) {
         fclose(fp), free(buffer), fputs("entire read fails", stderr), exit(1);
     }
+
+    buffer[ul_size] = '\0';
     
-    size = (int *)lSize;
     fclose(fp);
     return buffer;
 }
