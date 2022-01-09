@@ -6,7 +6,7 @@ void sigchld_handler(int);
 
 void parse_request(char *, char ***);
 
-void *loadfile(char *, int *);
+void *load_file(char *, int *);
 
 
 #endif
